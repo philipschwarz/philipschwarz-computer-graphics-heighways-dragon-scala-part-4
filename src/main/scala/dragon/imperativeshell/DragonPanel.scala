@@ -4,21 +4,10 @@ import dragon.*
 import dragon.functionalcore.*
 import dragon.functionalcore.Direction.{East, South}
 
-import java.awt.event.{ActionEvent, ActionListener}
-import java.awt.{Graphics, MenuItem}
+import java.awt.Graphics
 import javax.swing.*
 
-class DragonPanel(enclosingFrame: JFrame) extends JPanel with ActionListener:
-
-  var dragonConfig = DragonConfiguration()
-
-  override def actionPerformed(e: ActionEvent): Unit =
-    if e.getSource.isInstanceOf[MenuItem] then
-      val command = e.getSource.asInstanceOf[MenuItem].getActionCommand
-      val configChange = DragonConfiguration.Change.valueOf(command)
-      dragonConfig = dragonConfig.updated(configChange)
-      enclosingFrame.setTitle(dragonConfig.asText)
-      enclosingFrame.repaint()
+class DragonPanel(var dragonConfig: DragonConfiguration = DragonConfiguration()) extends JPanel :
 
   override def paintComponent(g: Graphics): Unit =
 
