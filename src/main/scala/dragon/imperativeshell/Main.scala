@@ -1,8 +1,6 @@
 package dragon.imperativeshell
 
-import dragon.imperativeshell.displayDragonFrame
-
-import javax.swing.SwingUtilities
+import javax.swing.{JFrame, SwingUtilities, WindowConstants}
 
 @main def main(): Unit =
   // Create the frame/panel on the event dispatching thread.
@@ -10,3 +8,10 @@ import javax.swing.SwingUtilities
     new Runnable():
       def run(): Unit = displayDragonFrame()
   )
+
+def displayDragonFrame(): Unit =
+  JFrame.setDefaultLookAndFeelDecorated(true)
+  val frame = new DragonFrame()
+  frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+  frame.setSize(2000, 2000)
+  frame.setVisible(true)  
