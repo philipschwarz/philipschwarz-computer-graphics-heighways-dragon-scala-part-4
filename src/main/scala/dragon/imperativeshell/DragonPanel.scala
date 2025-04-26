@@ -7,18 +7,12 @@ import dragon.functionalcore.Direction.{East, South}
 import java.awt.Graphics
 import javax.swing.*
 
-class DragonPanel(var dragonConfig: DragonConfiguration = DragonConfiguration()) extends JPanel :
+class DragonPanel(var config: DragonConfiguration = DragonConfiguration()) extends JPanel:
 
   override def paintComponent(g: Graphics): Unit =
 
     val panelHeight = getSize().height - 1
-
-    def startPoint(xPos: Int, yPos: Int): Point =
-      val panelWidth = getSize().width - 1
-      val panelCentre = Point(panelWidth / 2 + xPos, panelHeight / 2 + yPos)
-      panelCentre
-        .translate(South, panelHeight / 7)
-        .translate(East, panelWidth / 5)
+    val panelWidth = getSize().width - 1
 
     def draw(line: Line): Unit =
       val (ax, ay) = line.start.deviceCoords(panelHeight)
@@ -29,9 +23,16 @@ class DragonPanel(var dragonConfig: DragonConfiguration = DragonConfiguration())
       Dragon(start, age, length, direction).path.lines
         .foreach(draw)
 
-    dragonConfig match
+    config match
       case DragonConfiguration(age, length, xPos, yPos, startDirection, colourCombination) =>
         super.paintComponent(g)
         setBackground(colourCombination.backgroundColour)
         g.setColor(colourCombination.lineColour)
-        drawDragon(startPoint(xPos, yPos), age, length, startDirection)
+        val startPoint = startingPoint(xPos, yPos, panelHeight, panelWidth)
+        drawDragon(startPoint, age, length, startDirection)
+
+  private def startingPoint(xPos: Int, yPos: Int, panelHeight: Int, panelWidth: Int): Point =
+    val panelCentre = Point(panelWidth / 2 + xPos, panelHeight / 2 + yPos)
+    panelCentre
+      .translate(South, panelHeight / 7)
+      .translate(East, panelWidth / 5)

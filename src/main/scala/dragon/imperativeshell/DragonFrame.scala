@@ -7,9 +7,10 @@ import java.awt.{MenuBar, MenuItem}
 import javax.swing.JFrame
 
 class DragonFrame extends JFrame with ActionListener :
+
   val panel = DragonPanel()
   add(panel)
-  setTitle(panel.dragonConfig.asText)
+  setTitle(panel.config.asText)
   setupMenuBar(this)
 
   private def setupMenuBar(actionListener: ActionListener): Unit =
@@ -21,6 +22,6 @@ class DragonFrame extends JFrame with ActionListener :
     if e.getSource.isInstanceOf[MenuItem] then
       val command = e.getSource.asInstanceOf[MenuItem].getActionCommand
       val configChange = DragonConfiguration.Change.valueOf(command)
-      panel.dragonConfig = panel.dragonConfig.updated(configChange)
-      setTitle(panel.dragonConfig.asText)
+      panel.config = panel.config.updated(configChange)
+      setTitle(panel.config.asText)
       repaint()
