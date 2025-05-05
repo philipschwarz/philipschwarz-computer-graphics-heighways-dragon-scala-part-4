@@ -1,6 +1,6 @@
 package dragon.imperativeshell
 
-import dragon.functionalcore.DragonConfiguration.Change as ConfigChange
+import dragon.functionalcore.DragonConfiguration.DragonConfigChange as ConfigChange
 
 import java.awt.event.{ActionListener, KeyEvent}
 import java.awt.{Menu, MenuItem, MenuShortcut}
