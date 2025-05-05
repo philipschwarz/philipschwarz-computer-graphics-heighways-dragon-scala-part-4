@@ -5,16 +5,26 @@ import dragon.functionalcore.action.{ApplicationAction, DemoAction, DragonAction
 
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.{MenuBar, MenuItem}
-import javax.swing.JFrame
+import javax.swing.{JFrame, JOptionPane, WindowConstants}
 import scala.util.Try
 
-class DragonFrame extends JFrame with ActionListener:
+class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
 
+  private val demoTimer = createDemoTimer(this)
+  private val showingDemoAtStartupTime = askIfShowingDemo
   private val panel = DragonPanel()
+
+  setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
+  setSize(width, height)
+  setVisible(true)
+
   add(panel)
   setTitle(panel.config.asText)
   setupMenuBar(this)
-  private val demoTimer = setupDemoTimer(this)
+
+  if showingDemoAtStartupTime then
+    panel.config = DragonConfiguration.forDemo(width, height)
+    demoTimer.beginDemo()
 
   override def actionPerformed(e: ActionEvent): Unit = e.getSource match
     case item: MenuItem => handleMenuAction(item)
@@ -27,13 +37,15 @@ class DragonFrame extends JFrame with ActionListener:
     menuBar.add(DragonConfigMenu(actionListener))
     setMenuBar(menuBar)
 
-  private def setupDemoTimer(actionListener: ActionListener): DemoTimer =
+  private def createDemoTimer(actionListener: ActionListener): DemoTimer =
     val timer = DemoTimer(
       initialDelayBetweenSteps = 10,
       listener = actionListener,
       numberOfSteps = Demo.steps.length)
-    timer.start()
     timer
+
+  private def askIfShowingDemo: Boolean =
+    JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "Show Demo?", "", JOptionPane.YES_NO_OPTION)
 
   private def handleMenuAction(menuItem: MenuItem): Unit =
     val command = menuItem.getActionCommand
@@ -41,14 +53,23 @@ class DragonFrame extends JFrame with ActionListener:
     val maybeApplicationAction = Try(ApplicationAction.valueOf(command)).toOption
     maybeDragonAction.orElse(maybeApplicationAction) match
       case Some(dragonAction:DragonAction) =>
-        panel.config = panel.config.updated(dragonAction)
+        if !demoTimer.isRunning then
+          if demoTimer.isPaused then demoTimer.endDemo()
+          panel.config = panel.config.updated(dragonAction)
+          setTitle(panel.config.asText)
+          repaint()
+      case Some(ApplicationAction.StartDemo) =>
+        if demoTimer.isRunning then demoTimer.endDemo()
+        panel.config = DragonConfiguration.forDemo(width, height)
+        demoTimer.beginDemo()
+      case Some(ApplicationAction.PauseDemo) => demoTimer.pauseDemo()
+      case Some(ApplicationAction.ResumeDemo) => demoTimer.resumeDemo()
+      case Some(ApplicationAction.StartAgain) =>
+        if demoTimer.isRunning then demoTimer.endDemo()
+        panel.config = DragonConfiguration.initial
         setTitle(panel.config.asText)
         repaint()
-      case Some(ApplicationAction.Demo) =>
-        panel.config = DragonConfiguration()
-        demoTimer.reStart()
-      case Some(ApplicationAction.Quit) =>
-        System.exit(0)
+      case Some(ApplicationAction.Quit) => System.exit(0)
       case None => ()
 
   private def handleDemoStep(stepsTimer: DemoTimer): Unit =

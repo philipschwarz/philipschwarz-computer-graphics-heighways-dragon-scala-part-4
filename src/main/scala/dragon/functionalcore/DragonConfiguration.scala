@@ -5,12 +5,12 @@ import dragon.functionalcore.action.DragonAction
 import java.text.NumberFormat
 
 case class DragonConfiguration(
-  age: Int = 0,
-  length: Int = 1,
-  xPos: Int = 0,
-  yPos: Int = 0,
-  startDirection: Direction = Direction.East,
-  colourCombination: ColourCombination = ColourCombination.RedOnBlack
+  age: Int,
+  length: Int,
+  xPos: Int,
+  yPos: Int,
+  startDirection: Direction,
+  colourCombination: ColourCombination
 ):
 
   private val numberFormatter: NumberFormat = NumberFormat.getNumberInstance
@@ -35,3 +35,23 @@ case class DragonConfiguration(
       s"Number of lines: ${numberFormatter.format(Math.pow(2, age))}" + separator +
       s"Start position: x=$xPos y=$yPos" + separator +
       s"Start direction: $startDirection"
+
+object DragonConfiguration:
+
+  val initial: DragonConfiguration = DragonConfiguration(
+      age = 0,
+      length = 100,
+      xPos = 0,
+      yPos = 0,
+      startDirection = Direction.East,
+      colourCombination = ColourCombination.RedOnBlack
+  )
+
+  def forDemo(width: Int, height: Int): DragonConfiguration = DragonConfiguration(
+    age = 0,
+    length = 1,
+    xPos = width/5,
+    yPos = -height/12,
+    startDirection = Direction.East,
+    colourCombination = ColourCombination.RedOnBlack
+  )

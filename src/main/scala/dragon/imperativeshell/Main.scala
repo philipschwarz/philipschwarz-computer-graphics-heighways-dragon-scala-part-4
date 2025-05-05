@@ -11,7 +11,4 @@ import javax.swing.{JFrame, SwingUtilities, WindowConstants}
 
 def displayDragonFrame(): Unit =
   JFrame.setDefaultLookAndFeelDecorated(true)
-  val frame = new DragonFrame()
-  frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
-  frame.setSize(2000, 2000)
-  frame.setVisible(true)  
+  new DragonFrame(width = 2000, height = 2000)

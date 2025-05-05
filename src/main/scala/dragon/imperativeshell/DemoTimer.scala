@@ -26,6 +26,22 @@ class DemoTimer(
     if stepCount == numberOfSteps then stop()
     stepNumber
 
-  def reStart(): Unit = 
-    stepCount = 0
-    super.start()
+  def pauseDemo(): Unit =
+    if isRunning then stop()
+
+  def resumeDemo(): Unit = {
+    if isPaused then start()
+  }
+
+  def beginDemo(): Unit =
+    if !isRunning then
+      stepCount = 0
+      msDelayBetweenSteps = initialDelayBetweenSteps
+      start()
+
+  def endDemo(): Unit =
+    stepCount = numberOfSteps
+    stop()
+    
+  def isPaused: Boolean =
+    !isRunning && (1 until numberOfSteps).contains(stepCount) 

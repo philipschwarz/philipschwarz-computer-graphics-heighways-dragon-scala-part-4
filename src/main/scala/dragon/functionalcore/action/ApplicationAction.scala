@@ -1,4 +1,4 @@
 package dragon.functionalcore.action
 
 enum ApplicationAction:
-  case Demo, Quit
+  case StartDemo, PauseDemo, ResumeDemo, StartAgain, Quit

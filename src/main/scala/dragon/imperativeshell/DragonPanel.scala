@@ -7,12 +7,12 @@ import dragon.functionalcore.Direction.{East, South}
 import java.awt.Graphics
 import javax.swing.*
 
-class DragonPanel(var config: DragonConfiguration = DragonConfiguration()) extends JPanel:
+class DragonPanel(var config: DragonConfiguration = DragonConfiguration.initial) extends JPanel:
+
+  def panelHeight = getSize().height - 1
+  def panelWidth = getSize().width - 1
 
   override def paintComponent(g: Graphics): Unit =
-
-    val panelHeight = getSize().height - 1
-    val panelWidth = getSize().width - 1
 
     def draw(line: Line): Unit =
       val (ax, ay) = line.start.deviceCoords(panelHeight)
@@ -32,7 +32,4 @@ class DragonPanel(var config: DragonConfiguration = DragonConfiguration()) exten
         drawDragon(startPoint, age, length, startDirection)
 
   private def startingPoint(xPos: Int, yPos: Int, panelHeight: Int, panelWidth: Int): Point =
-    val panelCentre = Point(panelWidth / 2 + xPos, panelHeight / 2 + yPos)
-    panelCentre
-      .translate(South, panelHeight / 7)
-      .translate(East, panelWidth / 5)
+    Point(panelWidth / 2 + xPos, panelHeight / 2 + yPos)
