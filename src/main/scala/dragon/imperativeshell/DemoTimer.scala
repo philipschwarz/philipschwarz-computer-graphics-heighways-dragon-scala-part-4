@@ -5,10 +5,10 @@ import javax.swing.Timer
 
 type Milliseconds = Int
 
-class DemoStepsTimer(
+class DemoTimer(
   initialDelayBetweenSteps: Milliseconds,
   listener: ActionListener,
-  numberOfSteps: Int                 
+  numberOfSteps: Int
  ) extends Timer(initialDelayBetweenSteps, listener):
 
   private var delay: Milliseconds = initialDelayBetweenSteps
@@ -20,8 +20,12 @@ class DemoStepsTimer(
     delay = ms
     setDelay(ms)
 
-  def nextStepNumber(): Int =
+  def stepNumber(): Int =
     val stepNumber = stepCount
     stepCount = stepCount + 1
     if stepCount == numberOfSteps then stop()
     stepNumber
+
+  def reStart(): Unit = 
+    stepCount = 0
+    super.start()

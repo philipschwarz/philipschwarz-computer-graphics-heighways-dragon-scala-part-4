@@ -1,11 +1,11 @@
 package dragon.imperativeshell
 
-import dragon.functionalcore.DragonConfiguration.DragonConfigChange as ConfigChange
+import dragon.functionalcore.action.DragonAction as ConfigChange
 
 import java.awt.event.{ActionListener, KeyEvent}
 import java.awt.{Menu, MenuItem, MenuShortcut}
 
-class DragonConfigMenu(actionListener: ActionListener) extends Menu("Configuration"):
+class DragonConfigMenu(actionListener: ActionListener) extends Menu("Dragon Configuration"):
 
   private val menuItemDetails = List(
     ConfigChange.GrowOlder -> KeyEvent.VK_CLOSE_BRACKET,
