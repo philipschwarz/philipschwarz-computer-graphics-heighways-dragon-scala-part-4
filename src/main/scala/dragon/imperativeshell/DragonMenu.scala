@@ -1,20 +1,20 @@
 package dragon.imperativeshell
 
 import dragon.functionalcore.action.DragonAction
-import dragon.imperativeshell.DragonConfigMenu.menuItemDetails
+import dragon.imperativeshell.DragonMenu.menuItemDetails
 
 import java.awt.event.{ActionListener, KeyEvent}
 import java.awt.{Menu, MenuItem, MenuShortcut}
 
-class DragonConfigMenu(actionListener: ActionListener) extends Menu("Dragon Configuration"):
+class DragonMenu(actionListener: ActionListener) extends Menu("Dragon Parameters"):
 
-  menuItemDetails.foreach { case dragonChange -> (keyEventNumber, withShift) =>
-    val item = MenuItem(dragonChange.toString, MenuShortcut(keyEventNumber, withShift))
+  menuItemDetails.foreach { case dragonAction -> (keyEventNumber, withShift) =>
+    val item = MenuItem(dragonAction.toString, MenuShortcut(keyEventNumber, withShift))
     add(item)
     item.addActionListener(actionListener)
   }
 
-object DragonConfigMenu:
+object DragonMenu:
 
   private val menuItemDetails: List[(DragonAction, (Int, Boolean))] = List(
     DragonAction.ChangeColourScheme -> (KeyEvent.VK_C, false),

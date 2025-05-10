@@ -39,7 +39,7 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
   private def setupMenuBar(actionListener: ActionListener): Unit =
     val menuBar = MenuBar()
     menuBar.add(ApplicationMenu(actionListener))
-    menuBar.add(DragonConfigMenu(actionListener))
+    menuBar.add(DragonMenu(actionListener))
     setMenuBar(menuBar)
 
   private def createDemoTimer(actionListener: ActionListener): DemoTimer =
@@ -78,7 +78,7 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
         panel.dragonParameters = DragonParameters.initial
         setTitle(panel.dragonParameters.asText)
         repaint()
-        showMenuActionsDialog()      
+        showMenuActionsDialog()
       case Some(dragonAction: DragonAction) =>
         panel.dragonParameters = panel.dragonParameters.updated(dragonAction)
         setTitle(panel.dragonParameters.asText)
@@ -110,5 +110,5 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
 
   private def showMenuActionsDialog(): Unit =
     val message =
-      "- APPLICATION -\n\n" + ApplicationMenu.asText + "\n\n" + "- DRAGON -\n\n" + DragonConfigMenu.asText
+      "- APPLICATION -\n\n" + ApplicationMenu.asText + "\n\n" + "- DRAGON -\n\n" + DragonMenu.asText
     JOptionPane.showMessageDialog(this, message, "INSTRUCTIONS", JOptionPane.DEFAULT_OPTION, null)
