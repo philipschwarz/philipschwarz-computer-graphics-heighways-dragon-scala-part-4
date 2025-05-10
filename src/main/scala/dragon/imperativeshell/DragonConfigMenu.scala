@@ -1,27 +1,35 @@
 package dragon.imperativeshell
 
-import dragon.functionalcore.action.DragonAction as ConfigChange
+import dragon.functionalcore.action.DragonAction
+import dragon.imperativeshell.DragonConfigMenu.menuItemDetails
 
 import java.awt.event.{ActionListener, KeyEvent}
 import java.awt.{Menu, MenuItem, MenuShortcut}
 
 class DragonConfigMenu(actionListener: ActionListener) extends Menu("Dragon Configuration"):
 
-  private val menuItemDetails = List(
-    ConfigChange.GrowOlder -> KeyEvent.VK_CLOSE_BRACKET,
-    ConfigChange.GrowYounger -> KeyEvent.VK_OPEN_BRACKET,
-    ConfigChange.GrowLarger -> KeyEvent.VK_EQUALS,
-    ConfigChange.GrowSmaller -> KeyEvent.VK_MINUS,
-    ConfigChange.MoveRight -> KeyEvent.VK_RIGHT,
-    ConfigChange.MoveLeft -> KeyEvent.VK_LEFT,
-    ConfigChange.MoveUp -> KeyEvent.VK_UP,
-    ConfigChange.MoveDown -> KeyEvent.VK_DOWN,
-    ConfigChange.ChangeColour -> KeyEvent.VK_C,
-    ConfigChange.ChangeOrientation -> KeyEvent.VK_O
-  )
-
-  menuItemDetails.foreach { case dragonChange -> keyEventNumber =>
-    val item = MenuItem(dragonChange.toString, MenuShortcut(keyEventNumber))
+  menuItemDetails.foreach { case dragonChange -> (keyEventNumber, withShift) =>
+    val item = MenuItem(dragonChange.toString, MenuShortcut(keyEventNumber, withShift))
     add(item)
     item.addActionListener(actionListener)
   }
+
+object DragonConfigMenu:
+
+  private val menuItemDetails: List[(DragonAction, (Int, Boolean))] = List(
+    DragonAction.ChangeColourScheme -> (KeyEvent.VK_C,false),
+    DragonAction.ChangeOrientation -> (KeyEvent.VK_O,false),
+    DragonAction.GrowOlder -> (KeyEvent.VK_RIGHT,false),
+    DragonAction.GrowYounger -> (KeyEvent.VK_LEFT,false),
+    DragonAction.GrowLarger -> (KeyEvent.VK_UP,false),
+    DragonAction.GrowSmaller -> (KeyEvent.VK_DOWN,false),
+    DragonAction.MoveRight -> (KeyEvent.VK_RIGHT,true),
+    DragonAction.MoveLeft -> (KeyEvent.VK_LEFT,true),
+    DragonAction.MoveUp -> (KeyEvent.VK_UP,true),
+    DragonAction.MoveDown -> (KeyEvent.VK_DOWN,true),
+  )
+
+  val asText: String =
+    menuItemDetails.map { case (change, (keyCode, withShift)) =>
+      s"CMD ${if withShift then " + SHIFT" else ""} + ${KeyEvent.getKeyText(keyCode)} = ${change.text}"
+    }.mkString("\n")

@@ -11,37 +11,30 @@ class DemoTimer(
   numberOfSteps: Int
  ) extends Timer(initialDelayBetweenSteps, listener):
 
-  private var delay: Milliseconds = initialDelayBetweenSteps
+  private var currentStepNumber: Int = 0
 
-  private var stepCount: Int = 0
+  def msDelayBetweenSteps: Milliseconds = getDelay
+  def msDelayBetweenSteps_=(ms: Milliseconds): Unit = setDelay(ms)
 
-  def msDelayBetweenSteps: Milliseconds = delay
-  def msDelayBetweenSteps_=(ms: Milliseconds): Unit =
-    delay = ms
-    setDelay(ms)
-
-  def stepNumber(): Int =
-    val stepNumber = stepCount
-    stepCount = stepCount + 1
-    if stepCount == numberOfSteps then stop()
+  def getAndIncrementStepNumber(): Int =
+    val stepNumber = currentStepNumber
+    currentStepNumber = currentStepNumber + 1
+    if currentStepNumber == numberOfSteps then stop()
     stepNumber
 
-  def pauseDemo(): Unit =
-    if isRunning then stop()
+  def pauseDemo(): Unit = if isRunning then stop()
 
-  def resumeDemo(): Unit = {
-    if isPaused then start()
-  }
+  def resumeDemo(): Unit = if isPaused then start()
 
   def beginDemo(): Unit =
     if !isRunning then
-      stepCount = 0
+      currentStepNumber = 0
       msDelayBetweenSteps = initialDelayBetweenSteps
       start()
 
   def endDemo(): Unit =
-    stepCount = numberOfSteps
+    currentStepNumber = numberOfSteps
     stop()
-    
+
   def isPaused: Boolean =
-    !isRunning && (1 until numberOfSteps).contains(stepCount) 
+    !isRunning && currentStepNumber > 0 && currentStepNumber < numberOfSteps

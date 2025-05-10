@@ -24,7 +24,7 @@ case class DragonConfiguration(
     case DragonAction.MoveLeft if xPos > -1_000  => copy(xPos = xPos - 10 * age)
     case DragonAction.MoveUp if yPos < 1_000     => copy(yPos = yPos + 10 * age)
     case DragonAction.MoveDown if yPos > -1_000  => copy(yPos = yPos - 10 * age)
-    case DragonAction.ChangeColour               => copy(colourCombination = colourCombination.next)
+    case DragonAction.ChangeColourScheme               => copy(colourCombination = colourCombination.next)
     case DragonAction.ChangeOrientation          => copy(startDirection = startDirection.next)
     case _                                       => this
 

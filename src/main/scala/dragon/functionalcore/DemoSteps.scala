@@ -1,13 +1,15 @@
 package dragon.functionalcore
 
 import dragon.functionalcore.Direction
-import dragon.functionalcore.action.{DemoAction, DragonAction}
-
-type DemoStep = DragonAction | DemoAction
+import dragon.functionalcore.action.{ApplicationAction, DemoAction, DragonAction}
 
 object Demo:
 
-  val steps: List[DemoStep] =
+  type Step = DragonAction | DemoAction
+
+  def numberOfSteps = stepByNumber.size
+
+  val stepByNumber: Map[Int,Step] =
     List(
       List.fill(10)(DragonAction.GrowOlder),
       List(DemoAction.GoSlower),
@@ -37,9 +39,9 @@ object Demo:
           List.fill(10)(DemoAction.Sleep)
         ).flatten
       ).flatten,
-      List(DragonAction.ChangeColour),
+      List(DragonAction.ChangeColourScheme),
       List.fill(10)(DemoAction.Sleep),
-      List(DragonAction.ChangeColour),
+      List(DragonAction.ChangeColourScheme),
       List.fill(10)(DemoAction.Sleep),
       List.fill(3)(DragonAction.GrowYounger),
       List.fill(10)(DragonAction.GrowSmaller),
@@ -52,4 +54,6 @@ object Demo:
       List.fill(5)(DragonAction.GrowYounger),
       List.fill(10)(DemoAction.Sleep),
       List.fill(20)(DragonAction.GrowOlder),
-    ).flatten
+      List.fill(10)(DemoAction.Sleep),
+      List(DemoAction.End)
+    ).flatten.zipWithIndex.map{ case (v, k) => k -> v }.toMap
