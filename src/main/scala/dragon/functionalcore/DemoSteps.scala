@@ -30,7 +30,7 @@ object Demo:
       List.fill(40)(DragonAction.MoveUp),
       List(DemoAction.GoSlower),
       List.fill(7)(DragonAction.GrowOlder),
-      List.fill(10)(DragonAction.GrowSmaller),
+      List.fill(11)(DragonAction.GrowSmaller),
       List.fill(4)(DragonAction.MoveRight),
       List.fill(2)(DragonAction.MoveDown),
       List
@@ -46,7 +46,7 @@ object Demo:
       List(DragonAction.ChangeColourScheme),
       List.fill(10)(DemoAction.Sleep),
       List.fill(3)(DragonAction.GrowYounger),
-      List.fill(10)(DragonAction.GrowSmaller),
+      List.fill(9)(DragonAction.GrowSmaller),
       List(DemoAction.GoFaster),
       List.fill(14)(DragonAction.MoveRight),
       List.fill(6)(DragonAction.MoveDown),
