@@ -4,7 +4,7 @@ import dragon.functionalcore.action.DragonAction
 
 import java.text.NumberFormat
 
-case class DragonConfiguration(
+case class DragonParameters(
     age: Int,
     length: Int,
     xPos: Int,
@@ -15,7 +15,7 @@ case class DragonConfiguration(
 
   private val numberFormatter: NumberFormat = NumberFormat.getNumberInstance
 
-  def updated(change: DragonAction): DragonConfiguration = change match
+  def updated(change: DragonAction): DragonParameters = change match
     case DragonAction.GrowOlder if age < 20      => copy(age = age + 1)
     case DragonAction.GrowYounger if age > 0     => copy(age = age - 1)
     case DragonAction.GrowLarger if length < 500 => copy(length = length + Math.max(1, length / 10))
@@ -36,9 +36,9 @@ case class DragonConfiguration(
       s"Start position: x=$xPos y=$yPos" + separator +
       s"Start direction: $startDirection"
 
-object DragonConfiguration:
+object DragonParameters:
 
-  val initial: DragonConfiguration = DragonConfiguration(
+  val initial: DragonParameters = DragonParameters(
     age = 0,
     length = 100,
     xPos = 0,
@@ -47,7 +47,7 @@ object DragonConfiguration:
     colourCombination = ColourCombination.RedOnBlack
   )
 
-  def forDemo(width: Int, height: Int): DragonConfiguration = DragonConfiguration(
+  def forDemo(width: Int, height: Int): DragonParameters = DragonParameters(
     age = 0,
     length = 1,
     xPos = width / 5,

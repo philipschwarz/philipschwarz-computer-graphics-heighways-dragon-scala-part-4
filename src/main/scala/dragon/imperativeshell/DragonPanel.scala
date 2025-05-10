@@ -7,7 +7,7 @@ import dragon.functionalcore.Direction.{East, South}
 import java.awt.Graphics
 import javax.swing.*
 
-class DragonPanel(var config: DragonConfiguration = DragonConfiguration.initial) extends JPanel:
+class DragonPanel(var dragonParameters: DragonParameters = DragonParameters.initial) extends JPanel:
 
   def panelHeight = getSize().height - 1
   def panelWidth = getSize().width - 1
@@ -23,8 +23,8 @@ class DragonPanel(var config: DragonConfiguration = DragonConfiguration.initial)
       Dragon(start, age, length, direction).path.lines
         .foreach(draw)
 
-    config match
-      case DragonConfiguration(age, length, xPos, yPos, startDirection, colourCombination) =>
+    dragonParameters match
+      case DragonParameters(age, length, xPos, yPos, startDirection, colourCombination) =>
         super.paintComponent(g)
         setBackground(colourCombination.backgroundColour)
         g.setColor(colourCombination.lineColour)

@@ -1,7 +1,7 @@
 package dragon.imperativeshell
 
 import dragon.functionalcore.action.{ApplicationAction, DemoAction, DragonAction}
-import dragon.functionalcore.{Demo, DragonConfiguration}
+import dragon.functionalcore.{Demo, DragonParameters}
 
 import java.awt.event.{ActionEvent, ActionListener}
 import java.awt.image.BufferedImage
@@ -19,7 +19,7 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
   initialiseFrame()
 
   if userSaysTheyWantToSeeDemo() then
-    panel.config = DragonConfiguration.forDemo(width, height)
+    panel.dragonParameters = DragonParameters.forDemo(width, height)
     demoTimer.beginDemo()
   else showMenuActionsDialog()
 
@@ -32,7 +32,7 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     setSize(width, height)
     add(panel)
-    setTitle(panel.config.asText)
+    setTitle(panel.dragonParameters.asText)
     setupMenuBar(this)
     setVisible(true)
 
@@ -54,7 +54,7 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
     JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
       this,
       "Show Demo?",
-      "",
+      "Show Demo",
       JOptionPane.YES_NO_OPTION
     )
 
@@ -74,21 +74,21 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
       case Some(DemoAction.GoFaster) => demoTimer.msDelayBetweenSteps = 25
       case Some(DemoAction.GoSlower) => demoTimer.msDelayBetweenSteps = 100
       case Some(DemoAction.Sleep)    => ()
-      case Some(change: DragonAction) =>
-        panel.config = panel.config.updated(change)
-        setTitle(panel.config.asText)
-        repaint()
       case Some(DemoAction.End) =>
-        panel.config = DragonConfiguration.initial
-        setTitle(panel.config.asText)
+        panel.dragonParameters = DragonParameters.initial
+        setTitle(panel.dragonParameters.asText)
         repaint()
-        showMenuActionsDialog()
+        showMenuActionsDialog()      
+      case Some(dragonAction: DragonAction) =>
+        panel.dragonParameters = panel.dragonParameters.updated(dragonAction)
+        setTitle(panel.dragonParameters.asText)
+        repaint()
 
   private def handleDragonMenuAction(action: DragonAction): Unit =
     if !demoTimer.isRunning then
       if demoTimer.isPaused then demoTimer.endDemo()
-      panel.config = panel.config.updated(action)
-      setTitle(panel.config.asText)
+      panel.dragonParameters = panel.dragonParameters.updated(action)
+      setTitle(panel.dragonParameters.asText)
       repaint()
 
   private def handleApplicationMenuAction(action: ApplicationAction): Unit = action match
@@ -97,14 +97,14 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
       showMenuActionsDialog()
     case ApplicationAction.StartDemo =>
       if demoTimer.isRunning then demoTimer.endDemo()
-      panel.config = DragonConfiguration.forDemo(width, height)
+      panel.dragonParameters = DragonParameters.forDemo(width, height)
       demoTimer.beginDemo()
     case ApplicationAction.PauseDemo  => demoTimer.pauseDemo()
     case ApplicationAction.ResumeDemo => demoTimer.resumeDemo()
     case ApplicationAction.StartAgain =>
       if demoTimer.isRunning then demoTimer.endDemo()
-      panel.config = DragonConfiguration.initial
-      setTitle(panel.config.asText)
+      panel.dragonParameters = DragonParameters.initial
+      setTitle(panel.dragonParameters.asText)
       repaint()
     case ApplicationAction.Quit => System.exit(0)
 
