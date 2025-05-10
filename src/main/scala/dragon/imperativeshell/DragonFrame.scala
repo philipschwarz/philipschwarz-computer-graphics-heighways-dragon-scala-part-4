@@ -24,9 +24,9 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
   else showMenuActionsDialog()
 
   override def actionPerformed(e: ActionEvent): Unit = e.getSource match
-    case item: MenuItem => handleMenuAction(item)
+    case item: MenuItem   => handleMenuAction(item)
     case timer: DemoTimer => handleDemoStep(timer)
-    case _ => ()
+    case _                => ()
 
   private def initialiseFrame(): Unit =
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
@@ -46,11 +46,17 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
     val timer = DemoTimer(
       initialDelayBetweenSteps = 10,
       listener = actionListener,
-      numberOfSteps = Demo.numberOfSteps)
+      numberOfSteps = Demo.numberOfSteps
+    )
     timer
 
   private def userSaysTheyWantToSeeDemo(): Boolean =
-    JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this, "Show Demo?", "", JOptionPane.YES_NO_OPTION)
+    JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
+      this,
+      "Show Demo?",
+      "",
+      JOptionPane.YES_NO_OPTION
+    )
 
   private def handleMenuAction(menuItem: MenuItem): Unit =
     menuItem.getShortcut
@@ -58,21 +64,21 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
     val maybeDragonAction = Try(DragonAction.valueOf(command)).toOption
     val maybeApplicationAction = Try(ApplicationAction.valueOf(command)).toOption
     maybeDragonAction.orElse(maybeApplicationAction) match
-      case Some(action:DragonAction) => handleDragonMenuAction(action)
-      case Some(action:ApplicationAction) => handleApplicationMenuAction(action)
-      case None => ()
+      case Some(action: DragonAction)      => handleDragonMenuAction(action)
+      case Some(action: ApplicationAction) => handleApplicationMenuAction(action)
+      case None                            => ()
 
   private def handleDemoStep(demoTimer: DemoTimer): Unit =
     Demo.stepByNumber.get(demoTimer.getAndIncrementStepNumber()) match
-      case None => ()
+      case None                      => ()
       case Some(DemoAction.GoFaster) => demoTimer.msDelayBetweenSteps = 25
       case Some(DemoAction.GoSlower) => demoTimer.msDelayBetweenSteps = 100
-      case Some(DemoAction.Sleep) => ()
+      case Some(DemoAction.Sleep)    => ()
       case Some(change: DragonAction) =>
         panel.config = panel.config.updated(change)
         setTitle(panel.config.asText)
         repaint()
-      case Some(DemoAction.End)=>
+      case Some(DemoAction.End) =>
         panel.config = DragonConfiguration.initial
         setTitle(panel.config.asText)
         repaint()
@@ -93,7 +99,7 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
       if demoTimer.isRunning then demoTimer.endDemo()
       panel.config = DragonConfiguration.forDemo(width, height)
       demoTimer.beginDemo()
-    case ApplicationAction.PauseDemo => demoTimer.pauseDemo()
+    case ApplicationAction.PauseDemo  => demoTimer.pauseDemo()
     case ApplicationAction.ResumeDemo => demoTimer.resumeDemo()
     case ApplicationAction.StartAgain =>
       if demoTimer.isRunning then demoTimer.endDemo()
@@ -103,5 +109,6 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
     case ApplicationAction.Quit => System.exit(0)
 
   private def showMenuActionsDialog(): Unit =
-    val message = "- APPLICATION -\n\n" + ApplicationMenu.asText + "\n\n" + "- DRAGON -\n\n" + DragonConfigMenu.asText
+    val message =
+      "- APPLICATION -\n\n" + ApplicationMenu.asText + "\n\n" + "- DRAGON -\n\n" + DragonConfigMenu.asText
     JOptionPane.showMessageDialog(this, message, "INSTRUCTIONS", JOptionPane.DEFAULT_OPTION, null)

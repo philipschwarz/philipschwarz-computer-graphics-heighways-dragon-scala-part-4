@@ -6,10 +6,10 @@ import javax.swing.Timer
 type Milliseconds = Int
 
 class DemoTimer(
-  initialDelayBetweenSteps: Milliseconds,
-  listener: ActionListener,
-  numberOfSteps: Int
- ) extends Timer(initialDelayBetweenSteps, listener):
+    initialDelayBetweenSteps: Milliseconds,
+    listener: ActionListener,
+    numberOfSteps: Int
+) extends Timer(initialDelayBetweenSteps, listener):
 
   private var currentStepNumber: Int = 0
 

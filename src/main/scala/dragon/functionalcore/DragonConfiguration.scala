@@ -5,12 +5,12 @@ import dragon.functionalcore.action.DragonAction
 import java.text.NumberFormat
 
 case class DragonConfiguration(
-  age: Int,
-  length: Int,
-  xPos: Int,
-  yPos: Int,
-  startDirection: Direction,
-  colourCombination: ColourCombination
+    age: Int,
+    length: Int,
+    xPos: Int,
+    yPos: Int,
+    startDirection: Direction,
+    colourCombination: ColourCombination
 ):
 
   private val numberFormatter: NumberFormat = NumberFormat.getNumberInstance
@@ -24,7 +24,7 @@ case class DragonConfiguration(
     case DragonAction.MoveLeft if xPos > -1_000  => copy(xPos = xPos - 10 * age)
     case DragonAction.MoveUp if yPos < 1_000     => copy(yPos = yPos + 10 * age)
     case DragonAction.MoveDown if yPos > -1_000  => copy(yPos = yPos - 10 * age)
-    case DragonAction.ChangeColourScheme               => copy(colourCombination = colourCombination.next)
+    case DragonAction.ChangeColourScheme         => copy(colourCombination = colourCombination.next)
     case DragonAction.ChangeOrientation          => copy(startDirection = startDirection.next)
     case _                                       => this
 
@@ -39,19 +39,19 @@ case class DragonConfiguration(
 object DragonConfiguration:
 
   val initial: DragonConfiguration = DragonConfiguration(
-      age = 0,
-      length = 100,
-      xPos = 0,
-      yPos = 0,
-      startDirection = Direction.East,
-      colourCombination = ColourCombination.RedOnBlack
+    age = 0,
+    length = 100,
+    xPos = 0,
+    yPos = 0,
+    startDirection = Direction.East,
+    colourCombination = ColourCombination.RedOnBlack
   )
 
   def forDemo(width: Int, height: Int): DragonConfiguration = DragonConfiguration(
     age = 0,
     length = 1,
-    xPos = width/5,
-    yPos = -height/12,
+    xPos = width / 5,
+    yPos = -height / 12,
     startDirection = Direction.East,
     colourCombination = ColourCombination.RedOnBlack
   )

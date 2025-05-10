@@ -20,5 +20,5 @@ extension (shape: DragonShape)
     shape.reverse.map(_.rotated)
 
   def path(startPoint: Point, length: Int): DragonPath =
-    shape.foldLeft(List(startPoint)):
-      (path, direction) => path.head.translate(direction, length) :: path
+    shape.foldLeft(List(startPoint)): (path, direction) =>
+      path.head.translate(direction, length) :: path

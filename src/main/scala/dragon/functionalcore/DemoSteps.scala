@@ -9,7 +9,7 @@ object Demo:
 
   def numberOfSteps = stepByNumber.size
 
-  val stepByNumber: Map[Int,Step] =
+  val stepByNumber: Map[Int, Step] =
     List(
       List.fill(10)(DragonAction.GrowOlder),
       List(DemoAction.GoSlower),
@@ -33,12 +33,14 @@ object Demo:
       List.fill(10)(DragonAction.GrowSmaller),
       List.fill(4)(DragonAction.MoveRight),
       List.fill(2)(DragonAction.MoveDown),
-      List.fill(Direction.values.length)(
-        List(
-          List(DragonAction.ChangeOrientation),
-          List.fill(10)(DemoAction.Sleep)
-        ).flatten
-      ).flatten,
+      List
+        .fill(Direction.values.length)(
+          List(
+            List(DragonAction.ChangeOrientation),
+            List.fill(10)(DemoAction.Sleep)
+          ).flatten
+        )
+        .flatten,
       List(DragonAction.ChangeColourScheme),
       List.fill(10)(DemoAction.Sleep),
       List(DragonAction.ChangeColourScheme),
@@ -56,4 +58,4 @@ object Demo:
       List.fill(20)(DragonAction.GrowOlder),
       List.fill(10)(DemoAction.Sleep),
       List(DemoAction.End)
-    ).flatten.zipWithIndex.map{ case (v, k) => k -> v }.toMap
+    ).flatten.zipWithIndex.map { case (v, k) => k -> v }.toMap
