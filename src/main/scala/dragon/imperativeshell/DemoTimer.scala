@@ -6,35 +6,35 @@ import javax.swing.Timer
 type Milliseconds = Int
 
 class DemoTimer(
-    initialDelayBetweenSteps: Milliseconds,
+    initialMsDelayBetweenSteps: Milliseconds,
     listener: ActionListener,
     numberOfSteps: Int
-) extends Timer(initialDelayBetweenSteps, listener):
+) extends Timer(initialMsDelayBetweenSteps, listener):
 
-  private var currentStepNumber: Int = 0
+  private var nextStepNumber: Int = 0
 
   def msDelayBetweenSteps: Milliseconds = getDelay
   def msDelayBetweenSteps_=(ms: Milliseconds): Unit = setDelay(ms)
 
   def getAndIncrementStepNumber(): Int =
-    val stepNumber = currentStepNumber
-    currentStepNumber = currentStepNumber + 1
-    if currentStepNumber == numberOfSteps then stop()
+    val stepNumber = nextStepNumber
+    nextStepNumber = nextStepNumber + 1
+    if nextStepNumber == numberOfSteps then stop()
     stepNumber
+
+  def beginDemo(): Unit =
+    if !isRunning then
+      nextStepNumber = 0
+      msDelayBetweenSteps = initialMsDelayBetweenSteps
+      start()
 
   def pauseDemo(): Unit = if isRunning then stop()
 
   def resumeDemo(): Unit = if isPaused then start()
 
-  def beginDemo(): Unit =
-    if !isRunning then
-      currentStepNumber = 0
-      msDelayBetweenSteps = initialDelayBetweenSteps
-      start()
-
   def endDemo(): Unit =
-    currentStepNumber = numberOfSteps
+    nextStepNumber = numberOfSteps
     stop()
 
   def isPaused: Boolean =
-    !isRunning && currentStepNumber > 0 && currentStepNumber < numberOfSteps
+    !isRunning && nextStepNumber > 0 && nextStepNumber < numberOfSteps

@@ -41,7 +41,7 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
 
   private def createDemoTimer(actionListener: ActionListener): DemoTimer =
     val timer = DemoTimer(
-      initialDelayBetweenSteps = 10,
+      initialMsDelayBetweenSteps = 25,
       listener = actionListener,
       numberOfSteps = Demo.numberOfSteps
     )
@@ -67,9 +67,10 @@ class DragonFrame(width: Int, height: Int) extends JFrame with ActionListener:
 
   private def handleDemoStep(demoTimer: DemoTimer): Unit =
     Demo.stepByNumber.get(demoTimer.getAndIncrementStepNumber()) match
-      case None                      => ()
-      case Some(DemoAction.GoFaster) => demoTimer.msDelayBetweenSteps = 25
-      case Some(DemoAction.GoSlower) => demoTimer.msDelayBetweenSteps = 100
+      case None => ()
+      case Some(DemoAction.GoFaster) =>
+        demoTimer.msDelayBetweenSteps = Math.max(demoTimer.msDelayBetweenSteps - 25, 25)
+      case Some(DemoAction.GoSlower) => demoTimer.msDelayBetweenSteps += 25
       case Some(DemoAction.Sleep)    => ()
       case Some(DemoAction.End) =>
         panel.dragonParameters = DragonParameters.initial
