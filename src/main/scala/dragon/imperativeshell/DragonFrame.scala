@@ -4,10 +4,7 @@ import dragon.functionalcore.action.{ApplicationAction, DemoAction, DragonAction
 import dragon.functionalcore.{Demo, DragonParameters}
 
 import java.awt.event.{ActionEvent, ActionListener}
-import java.awt.image.BufferedImage
-import java.awt.{Dialog, MenuBar, MenuItem}
-import java.io.File
-import javax.imageio.ImageIO
+import java.awt.{MenuBar, MenuItem}
 import javax.swing.*
 import scala.util.Try
 
