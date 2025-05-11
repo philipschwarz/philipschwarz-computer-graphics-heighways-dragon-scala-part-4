@@ -15,7 +15,7 @@ case class DragonParameters(
 
   private val numberFormatter: NumberFormat = NumberFormat.getNumberInstance
 
-  def updated(change: DragonAction): DragonParameters = change match
+  def updated(action: DragonAction): DragonParameters = action match
     case DragonAction.GrowOlder if age < 20      => copy(age = age + 1)
     case DragonAction.GrowYounger if age > 0     => copy(age = age - 1)
     case DragonAction.GrowLarger if length < 500 => copy(length = length + Math.max(1, length / 10))
