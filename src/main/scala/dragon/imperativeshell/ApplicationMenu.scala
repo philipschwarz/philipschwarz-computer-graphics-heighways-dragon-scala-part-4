@@ -8,15 +8,15 @@ import java.awt.{Menu, MenuItem, MenuShortcut}
 
 class ApplicationMenu(actionListener: ActionListener) extends Menu("Application"):
 
-  menuItemDetails.foreach { case action -> keyEventNumber =>
-    val item = MenuItem(action.toString, MenuShortcut(keyEventNumber))
+  menuItemDetails.foreach { case action -> keyCode =>
+    val item = MenuItem(action.toString, MenuShortcut(keyCode))
     add(item)
     item.addActionListener(actionListener)
   }
 
 object ApplicationMenu:
 
-  private val menuItemDetails = List(
+  private val menuItemDetails: List[(action: ApplicationAction, keyCode: Int)] = List(
     ApplicationAction.Instructions -> KeyEvent.VK_I,
     ApplicationAction.StartDemo -> KeyEvent.VK_D,
     ApplicationAction.PauseDemo -> KeyEvent.VK_P,
